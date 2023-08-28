@@ -1,9 +1,29 @@
 import { View, Text, TouchableOpacity, TextInput } from "react-native";
 import { ChevronsLeft } from 'lucide-react-native'
-import { Link } from "expo-router";
+import { Link, useRouter } from "expo-router";
 import { Input } from "../../components/Input/Input";
+import { api } from "../../lib/axios";
+import { useContext, useState } from "react";
+import { AuthContext } from "../../context/auth";
 
 export default function NewNote() {
+
+    const { userId } = useContext(AuthContext)
+
+    const [Title, setTitle] = useState('')
+    const [description, setDescription] = useState('')
+
+    const router = useRouter()
+
+
+    async function handleCreateNote() {
+        await api.post(`/note/${userId}`, {
+            Title,
+            description
+        })
+        router.push('/notes')
+    }
+
     return (
         <View className="w-full h-full flex flex-col items-center justify-end bg-zinc-800 space-y-20">
             <View className="w-full flex items-center justify-center">
@@ -11,10 +31,10 @@ export default function NewNote() {
             </View>
             <View className="w-full flex flex-col items-center justify-center px-4 space-y-12">
                 <View className="w-full flex flex-col items-center justify-center space-y-4">
-                    <Input placeholder="Título" />
-                    <Input placeholder="Descrição" />
+                    <Input placeholder="Título" onChangeText={setTitle} />
+                    <Input placeholder="Descrição" onChangeText={setDescription} />
                 </View>
-                <TouchableOpacity className="bg-greenote-600 w-full h-12 rounded-lg flex items-center justify-center">
+                <TouchableOpacity onPressIn={handleCreateNote} className="bg-greenote-600 w-full h-12 rounded-lg flex items-center justify-center">
                     <Text className="text-2xl font-semibold">Enviar</Text>
                 </TouchableOpacity>
             </View>

@@ -2,11 +2,34 @@ import { View, Text, ScrollView, TouchableOpacity } from "react-native";
 import { CardNotes } from "../../components/Cards/Notes";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { Link } from "expo-router";
+import { useContext, useMemo, useState } from "react";
+import { AuthContext } from "../../context/auth";
+import { api } from "../../lib/axios";
+import dayjs from 'dayjs'
+
+interface NoteProps {
+    id: string
+    Title: string
+    CreatedAt: string
+}
 
 
 export default function Notes() {
 
     const { bottom, top } = useSafeAreaInsets()
+
+    const { userId } = useContext(AuthContext)
+
+    console.log(userId)
+
+    const [notes, setNotes] = useState<NoteProps[]>([])
+
+    const notesCache = useMemo(async () => {
+        await api.get(`/userNotes/${userId}`)
+            .then(function (response) {
+                setNotes(response.data.notes)
+            })
+    }, [])
 
     return (
         <View className="w-full h-full flex flex-col items-center justify-center bg-zinc-800">
@@ -23,8 +46,17 @@ export default function Notes() {
                         </TouchableOpacity>
                     </Link>
                 </View>
-                <View className="w-full h-max flex items-center justify-center space-y-8">
-                    <CardNotes id="Test" />
+                <View className="w-full h-max flex items-center justify-center">
+                    {notes.map(note => {
+                        return (
+                            <CardNotes
+                                key={note.id}
+                                title={note.Title}
+                                id={note.id}
+                                createdAt={dayjs(note.CreatedAt).format("D[/]MM[/]YYYY")}
+                            />
+                        )
+                    })}
                 </View>
             </ScrollView>
         </View>
