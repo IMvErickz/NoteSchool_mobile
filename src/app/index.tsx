@@ -1,7 +1,12 @@
 import { View, Text, TouchableOpacity } from "react-native";
 import { Link } from "expo-router";
+import { useContext } from "react";
+import { AuthContext } from "../context/auth";
 
 export default function Home() {
+
+    const { userId } = useContext(AuthContext)
+
     return (
         <View className="w-full h-full flex items-center justify-center bg-zinc-800 space-y-20">
             <View className='w-full flex items-center justify-center'>
@@ -18,13 +23,22 @@ export default function Home() {
                 </Text>
             </View>
             <View className="w-full flex items-center justify-center px-4">
-                <Link href='/auth' asChild>
+                {userId ? <Link href='/notes' asChild>
                     <TouchableOpacity className="bg-greenote-600 w-96 h-12 rounded-lg flex items-center justify-center">
                         <Text className="text-white text-2xl font-bold">
-                            Login
+                            Ir para as notas
                         </Text>
                     </TouchableOpacity>
                 </Link>
+                    :
+                    <Link href='/auth' asChild>
+                        <TouchableOpacity className="bg-greenote-600 w-96 h-12 rounded-lg flex items-center justify-center">
+                            <Text className="text-white text-2xl font-bold">
+                                Login
+                            </Text>
+                        </TouchableOpacity>
+                    </Link>
+                }
             </View>
         </View>
 

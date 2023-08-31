@@ -36,7 +36,7 @@ export default function Info() {
                             <Text className="text-greenote-600 text-6xl font-bold">{n.Title}</Text>
                         </View>
                         <View className="w-full flex items-center justify-center py-8">
-                            <Text className="text-white text-2xl text-center">
+                            <Text key={n.id} className="text-white text-2xl text-center">
                                 {n.description}
                             </Text>
                         </View>
