@@ -1,7 +1,7 @@
 import { View, Text, ScrollView, TouchableOpacity } from "react-native";
 import { CardNotes } from "../../components/Cards/Notes";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
-import { Link } from "expo-router";
+import { Link, useLocalSearchParams } from "expo-router";
 import { useContext, useMemo, useState } from "react";
 import { AuthContext } from "../../context/auth";
 import { api } from "../../lib/axios";
@@ -18,14 +18,12 @@ export default function Notes() {
 
     const { bottom, top } = useSafeAreaInsets()
 
-    const { userId } = useContext(AuthContext)
-
-    console.log(userId)
+    const { id } = useLocalSearchParams()
 
     const [notes, setNotes] = useState<NoteProps[]>([])
 
     const notesCache = useMemo(async () => {
-        await api.get(`/userNotes/${userId}`)
+        await api.get(`/userNotes/${id}`)
             .then(function (response) {
                 setNotes(response.data.notes)
             })

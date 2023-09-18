@@ -21,7 +21,7 @@ export default function NewNote() {
             Title,
             description
         })
-        router.push('/notes')
+        router.push(`/notes/${userId}`)
     }
 
     return (
@@ -39,7 +39,7 @@ export default function NewNote() {
                 </TouchableOpacity>
             </View>
             <View className="w-full flex items-start justify-end px-2 pt-32 pb-4">
-                <Link href={'/notes'} asChild>
+                <Link href={`/notes/${userId}`} asChild>
                     <TouchableOpacity>
                         <ChevronsLeft color="#04D361" size={48} />
                     </TouchableOpacity>

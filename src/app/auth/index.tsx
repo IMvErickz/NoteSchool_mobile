@@ -14,19 +14,19 @@ export default function Auth() {
     const { userId, handleUserId } = useContext(AuthContext)
 
     const [email, setEmail] = useState('')
+    const [password, setPassword] = useState('')
     const [info, setInfo] = useState<InfoProps[]>([])
 
     const router = useRouter()
 
     async function handleUser() {
-        await api.get(`/user/${email}`)
-            .then(function (response) {
-                setInfo(response.data.user)
-                info.map(e => handleUserId(e.id))
-                console.log(userId)
-                router.push('/notes')
-
-            })
+        await api.post(`/user`, {
+            email,
+            password
+        }).then(function (response) {
+            router.push(`/notes/${response.data.user.id}`)
+            handleUserId(response.data.user.id)
+        })
     }
 
     return (
@@ -36,7 +36,7 @@ export default function Auth() {
             </View>
             <View className="w-full px-4 flex flex-col items-center justify-center space-y-4">
                 <Input placeholder="Email" onChangeText={setEmail} />
-                <Input placeholder="Senha" />
+                <Input placeholder="Senha" onChangeText={setPassword} />
             </View>
             <View className="w-full flex items-center justify-center px-4">
                 {/* <Link href='/notes' asChild> */}
@@ -45,10 +45,10 @@ export default function Auth() {
                 </TouchableOpacity>
                 {/* </Link> */}
             </View>
-            <View className="w-full flex items-center justify-center">
+            <View className="w-full flex flex-row items-center justify-center">
                 <Text className="text-white text-lg">Ainda não tem conta?
                     <Link href='/register'>
-                        <Text className="underline">Cadastre-se aqui</Text>
+                        <Text className="underline"> Cadastre-se aqui</Text>
                     </Link>
                 </Text>
             </View>

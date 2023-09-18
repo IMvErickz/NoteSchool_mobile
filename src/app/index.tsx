@@ -23,7 +23,7 @@ export default function Home() {
                 </Text>
             </View>
             <View className="w-full flex items-center justify-center px-4">
-                {userId ? <Link href='/notes' asChild>
+                {userId ? <Link href={`/notes/${userId}`} asChild>
                     <TouchableOpacity className="bg-greenote-600 w-96 h-12 rounded-lg flex items-center justify-center">
                         <Text className="text-white text-2xl font-bold">
                             Ir para as notas

@@ -13,10 +13,9 @@ export default function Layout() {
                     contentStyle: {
                         backgroundColor: 'transparent'
                     },
-                    animation: 'flip',
+                    animation: 'fade_from_bottom',
                 }} >
                     <Stack.Screen name="index" />
-                    <Stack.Screen name="notes/index" />
                     <Stack.Screen name="new/index" />
                     <Stack.Screen name="auth/index" />
                     <Stack.Screen name="register/index" />

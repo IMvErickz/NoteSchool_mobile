@@ -1,5 +1,5 @@
 import axios from 'axios'
 
 export const api = axios.create({
-    baseURL: 'https://note-school-server.vercel.app'
+    baseURL: 'http://10.0.0.166:3333'
 })

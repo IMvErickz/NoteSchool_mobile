@@ -1,8 +1,9 @@
-import { Link, useLocalSearchParams } from "expo-router";
+import { Link, useLocalSearchParams, useRouter } from "expo-router";
 import { View, Text } from "react-native";
 import { TouchableOpacity } from "react-native-gesture-handler";
-import { useMemo, useState } from "react";
+import { useContext, useMemo, useState } from "react";
 import { api } from "../../lib/axios";
+import { AuthContext } from "../../context/auth";
 
 interface NoteProps {
     id: string
@@ -13,6 +14,9 @@ interface NoteProps {
 
 export default function Info() {
     const { id } = useLocalSearchParams()
+    const router = useRouter()
+
+    const { userId } = useContext(AuthContext)
 
     const [note, setNote] = useState<NoteProps[]>([])
 
@@ -25,6 +29,7 @@ export default function Info() {
 
     async function DeleteNote() {
         await api.delete(`/deleteNote/${id}`)
+        router.push(`/notes/${userId}`)
     }
 
     return (
@@ -32,19 +37,19 @@ export default function Info() {
             {note.map(n => {
                 return (
                     <>
-                        <View key={n.id} className="w-full flex items-center justify-center">
-                            <Text className="text-greenote-600 text-6xl font-bold">{n.Title}</Text>
+                        <View key={n.id} className="w-full flex items-center justify-center px-4">
+                            <Text className="text-greenote-600 text-6xl font-bold text-center">{n.Title}</Text>
                         </View>
                         <View className="w-full flex items-center justify-center py-8">
-                            <Text key={n.id} className="text-white text-2xl text-center">
+                            <Text className="text-white text-2xl text-center">
                                 {n.description}
                             </Text>
-                        </View>
+                        </View >
                     </>
                 )
             })}
             <View className="w-full flex flex-col px-4 space-y-4 py-8">
-                <Link href={'/notes'} asChild>
+                <Link href={`/notes/${userId}`} asChild>
                     <TouchableOpacity className="bg-slate-500 w-full h-12 rounded-lg flex items-center justify-center">
                         <Text className="text-white font-semibold text-2xl">
                             Voltar
@@ -57,6 +62,6 @@ export default function Info() {
                     </Text>
                 </TouchableOpacity>
             </View>
-        </View>
+        </View >
     )
 }
